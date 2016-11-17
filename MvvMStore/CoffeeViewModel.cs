@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace MvvMStore
 {
-    public class CoffeeViewModel
+    public class CoffeeViewModel: INotifyPropertyChanged
     {
 
         private Model.CoffeeList coffeeList;
@@ -22,7 +23,7 @@ namespace MvvMStore
         public Model.Coffee SelectedCoffee
         {
             get { return selectedCoffee; }
-            set { selectedCoffee = value; }
+            set { selectedCoffee = value; OnPropertyChanged(nameof(SelectedCoffee));}
         }
 
 
@@ -31,7 +32,17 @@ namespace MvvMStore
             CoffeeList = new Model.CoffeeList();
             selectedCoffee = new Model.Coffee();
         }
-        
-        
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            if(PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
     }
 }
