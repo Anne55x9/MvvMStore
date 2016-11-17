@@ -101,7 +101,8 @@
     <Compile Include="Model\Coffee.cs" />
     <Compile Include="Model\CoffeeList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CoffeeViewModel.cs" />
+    <Compile Include="ViewModel\CoffeeViewModel.cs" />
+    <Compile Include="ViewModel\RelayCommand.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
