@@ -20,7 +20,7 @@
         <TextBox x:Name="textBox2" HorizontalAlignment="Left" Margin="425,118,0,0" TextWrapping="Wrap" Text="{Binding InsertCoffee.Price, Mode=TwoWay}" VerticalAlignment="Top"/>
         <ListView x:Name="listView" HorizontalAlignment="Left" Height="244" Margin="595,75,0,0" VerticalAlignment="Top" Width="595" ItemsSource="{Binding CoffeeList}" SelectedItem="{Binding SelectedCoffee, Mode=TwoWay}"/>
         <Button x:Name="button" Content="Add" HorizontalAlignment="Left" Margin="177,224,0,0" VerticalAlignment="Top" ClickMode="{Binding InsertCoffee, Mode=TwoWay}" Command="{Binding AddCoffeeCommand}"/>
-        <Button x:Name="button1" Content="Remove" HorizontalAlignment="Left" Margin="345,224,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="button1" Content="Remove" HorizontalAlignment="Left" Margin="345,224,0,0" VerticalAlignment="Top" ClickMode="{Binding CoffeeList, Mode=TwoWay}" Command="{Binding RemoveCoffeeCommand}"/>
         <TextBlock x:Name="textBlock3" HorizontalAlignment="Left" Margin="622,275,0,0" TextWrapping="Wrap" Text="{Binding SelectedCoffee}" VerticalAlignment="Top" Height="69" Width="378"/>
         <TextBlock x:Name="textBlock4" HorizontalAlignment="Left" Margin="1159,528,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top"/>
 
