@@ -49,14 +49,20 @@ namespace MvvMStore
             coffeeList.Add(insertCoffee);
         }
 
+        private RelayCommand removeCoffeeCommand;
+
+        public RelayCommand RemoveCoffeeCommand
+        {
+            get { return removeCoffeeCommand; }
+            set { removeCoffeeCommand = value; }
+        }
 
         public CoffeeViewModel()
         {
             coffeeList = new Model.CoffeeList();
             selectedCoffee = new Model.Coffee();
             insertCoffee = new Model.Coffee();
-            addCoffeeCommand = new RelayCommand(AddNewCoffee);
-           
+            addCoffeeCommand = new RelayCommand(AddNewCoffee); 
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
