@@ -13,7 +13,9 @@ namespace MvvMStore.ViewModel
         private Action methodToExecute = null;
         private Func<bool> methodTODetectCanExecute = null;
         private Action addNewCoffee;
-        private Action removeCoffeeInList;
+        
+        
+       
 
         public event EventHandler CanExecuteChanged;
 
@@ -31,6 +33,7 @@ namespace MvvMStore.ViewModel
 
         public void Execute(object parameter)
         {
+            
             this.addNewCoffee();
         }
 
@@ -38,11 +41,7 @@ namespace MvvMStore.ViewModel
         public RelayCommand(Action addNewCoffee)
         {
             this.addNewCoffee = addNewCoffee;
-            
         }
-
-       
-
 
     }
 }
