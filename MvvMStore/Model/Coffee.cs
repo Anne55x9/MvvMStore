@@ -8,7 +8,7 @@ namespace MvvMStore.Model
 {
     public class Coffee 
     {
-       
+        #region properties   
         private string name;
 
         public string Name
@@ -33,6 +33,7 @@ namespace MvvMStore.Model
             get { return price; }
             set { price = value; }
         }
+        #endregion 
 
         public override string ToString()
         {

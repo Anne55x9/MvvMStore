@@ -11,7 +11,7 @@
     </Page.DataContext>
 
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid Style="{StaticResource GridStyle}">
         <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="88,71,0,0" TextWrapping="Wrap" Text="Coffee Name" VerticalAlignment="Top" />
         <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="232,71,0,0" TextWrapping="Wrap" Text="Place of Origin" VerticalAlignment="Top"/>
         <TextBlock x:Name="textBlock2" HorizontalAlignment="Left" Margin="434,75,0,0" TextWrapping="Wrap" Text="Price" VerticalAlignment="Top"/>
