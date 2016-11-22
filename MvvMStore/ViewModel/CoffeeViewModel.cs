@@ -33,7 +33,7 @@ namespace MvvMStore
         public Model.Coffee InsertCoffee
         {
             get { return insertCoffee; }
-            set { insertCoffee = value; }
+            set { insertCoffee = value;}
         }
 
         private RelayCommand addCoffeeCommand;
@@ -47,6 +47,15 @@ namespace MvvMStore
         public void AddNewCoffee()
         {
             coffeeList.Add(insertCoffee);
+        }
+
+        //Martins eks
+        private AddCoffeeToListCommand addCoffeeeCommand2;
+
+        public AddCoffeeToListCommand AddCoffeeCommand2
+        {
+            get { return addCoffeeeCommand2; }
+            set { addCoffeeeCommand2 = value; }
         }
 
         private RelayCommand removeCoffeeCommand;
@@ -69,6 +78,7 @@ namespace MvvMStore
             insertCoffee = new Model.Coffee();
             addCoffeeCommand = new RelayCommand(AddNewCoffee);
             removeCoffeeCommand = new RelayCommand(RemoveCoffeeInList);
+            //addCoffeeeCommand2 = new AddCoffeeToListCommand(AddNewCoffee); Martins eks
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -14,7 +14,7 @@ namespace MvvMStore.Model
         public string Name
         {
             get { return name; }
-            set { name = value; }
+            set { name = value;}
         }
 
         private string placeOfOrigin;

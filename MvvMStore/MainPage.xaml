@@ -23,6 +23,7 @@
         <Button x:Name="button1" Content="Remove" HorizontalAlignment="Left" Margin="345,224,0,0" VerticalAlignment="Top" ClickMode="{Binding CoffeeList, Mode=TwoWay}" Command="{Binding RemoveCoffeeCommand}"/>
         <TextBlock x:Name="textBlock3" HorizontalAlignment="Left" Margin="622,329,0,0" TextWrapping="Wrap" Text="{Binding SelectedCoffee}" VerticalAlignment="Top" Height="111" Width="284"/>
         <TextBlock x:Name="textBlock4" HorizontalAlignment="Left" Margin="1159,528,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top"/>
+    
 
     </Grid>
 </Page>
