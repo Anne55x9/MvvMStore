@@ -7,6 +7,9 @@ using System.ComponentModel;
 using MvvMStore.Model;
 using MvvMStore.ViewModel;
 using Windows.Storage;
+using Windows.UI.Popups;
+using Newtonsoft.Json;
+
 
 namespace MvvMStore
 {
@@ -54,7 +57,13 @@ namespace MvvMStore
 
         public void AddNewCoffee()
         {
-            coffeeList.Add(insertCoffee);
+            Coffee tempCoffee = new Coffee();
+            tempCoffee.Name = insertCoffee.Name;
+            tempCoffee.PlaceOfOrigin = insertCoffee.PlaceOfOrigin;
+            tempCoffee.Price = insertCoffee.Price;
+
+            coffeeList.Add(tempCoffee);
+
         }
 
 
@@ -79,7 +88,7 @@ namespace MvvMStore
         public async void SaveDataToDiscAsync()
         {
             string JsonText = this.CoffeeList.GetJson();
-            StorageFile file = await localfolder.CreateFileAsync(filnavn, CreationCollisionOption.ReplaceExisting);
+            StorageFile file = await localfolder.CreateFileAsync(this.filnavn, CreationCollisionOption.ReplaceExisting);
             await FileIO.WriteTextAsync(file, JsonText);
         }
 
@@ -87,16 +96,27 @@ namespace MvvMStore
 
         public async void GetDataFromDiscAsync()
         {
-            this.CoffeeList.Clear();
+            try
+            {
+                StorageFile file = await localfolder.GetFileAsync(filnavn);
+                string jsonText = await FileIO.ReadTextAsync(file);
 
-            StorageFile file = await localfolder.GetFileAsync(filnavn);
-            string jsonText = await FileIO.ReadTextAsync(file);
-            CoffeeList.InsertJson(jsonText);
+                this.CoffeeList.Clear();
+                CoffeeList.InsertJson(jsonText);
+            }
+            catch (Exception)
+            {
+
+                MessageDialog NoData = new MessageDialog("No Data Found", "Error!");
+                await NoData.ShowAsync();
+            }
+          
+         
         }
-      
 
         public CoffeeViewModel()
         {
+           
             //henter liste hvis der er en ellers opretter den en ny tom liste. 
             coffeeList = new Model.CoffeeList();
             selectedCoffee = new Model.Coffee();
@@ -110,6 +130,18 @@ namespace MvvMStore
 
             //laver en instas af local folder
             localfolder = ApplicationData.Current.LocalFolder;
+
+
+            //try
+            //{
+            //    GetDataFromDiscAsync();
+            //}
+            //catch (Exception)
+            //{
+            //    //throw;
+            //    CoffeeList.Add(){NameCollisionOption  };
+            //}
+           
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
