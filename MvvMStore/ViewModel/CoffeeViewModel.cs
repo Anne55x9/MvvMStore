@@ -73,7 +73,8 @@ namespace MvvMStore
 
 
         public RelayCommand SaveCoffeeListCommand { get; set; }
-       
+
+        // FileIO er en statisk klasse.
 
         public async void SaveDataToDiscAsync()
         {
@@ -84,9 +85,15 @@ namespace MvvMStore
 
         public RelayCommand GetDataCommand { get; set; }
 
+      
+
         public async void GetDataFromDiscAsync()
         {
+            this.CoffeeList.Clear();
 
+            StorageFile file = await localfolder.GetFileAsync(filnavn);
+            string jsonText = await FileIO.ReadTextAsync(file);
+            CoffeeList.InsertJson(jsonText);
         }
       
 
