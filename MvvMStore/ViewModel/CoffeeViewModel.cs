@@ -85,8 +85,6 @@ namespace MvvMStore
 
         public RelayCommand GetDataCommand { get; set; }
 
-      
-
         public async void GetDataFromDiscAsync()
         {
             this.CoffeeList.Clear();
