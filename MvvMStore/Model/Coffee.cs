@@ -37,6 +37,7 @@ namespace MvvMStore.Model
 
         public override string ToString()
         {
+            
             return "Coffee Name: " + Name + ". " + "Place of origin: " + PlaceOfOrigin + ". " + "Price: " + Price + " kr.";
         }
     }

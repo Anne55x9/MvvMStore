@@ -6,11 +6,19 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 using MvvMStore.Model;
 using MvvMStore.ViewModel;
+using Windows.Storage;
 
 namespace MvvMStore
 {
-    public class CoffeeViewModel: INotifyPropertyChanged
+    public class CoffeeViewModel : INotifyPropertyChanged
     {
+
+        /// <summary>
+        /// Gemmer json data fra liste i localfolder
+        /// </summary>
+        StorageFolder localfolder = null;
+
+        private readonly string filnavn = "JsonText.json";
 
         private Model.CoffeeList coffeeList;
 
@@ -25,7 +33,7 @@ namespace MvvMStore
         public Model.Coffee SelectedCoffee
         {
             get { return selectedCoffee; }
-            set { selectedCoffee = value; OnPropertyChanged(nameof(SelectedCoffee));}
+            set { selectedCoffee = value; OnPropertyChanged(nameof(SelectedCoffee)); }
         }
 
         private Model.Coffee insertCoffee;
@@ -33,7 +41,7 @@ namespace MvvMStore
         public Model.Coffee InsertCoffee
         {
             get { return insertCoffee; }
-            set { insertCoffee = value;}
+            set { insertCoffee = value; }
         }
 
         private RelayCommand addCoffeeCommand;
@@ -49,14 +57,6 @@ namespace MvvMStore
             coffeeList.Add(insertCoffee);
         }
 
-        //Martins eks
-        private AddCoffeeToListCommand addCoffeeeCommand2;
-
-        public AddCoffeeToListCommand AddCoffeeCommand2
-        {
-            get { return addCoffeeeCommand2; }
-            set { addCoffeeeCommand2 = value; }
-        }
 
         private RelayCommand removeCoffeeCommand;
 
@@ -71,14 +71,40 @@ namespace MvvMStore
             coffeeList.Remove(selectedCoffee);
         }
 
+
+        public RelayCommand SaveCoffeeListCommand { get; set; }
+       
+
+        public async void SaveDataToDiscAsync()
+        {
+            string JsonText = this.CoffeeList.GetJson();
+            StorageFile file = await localfolder.CreateFileAsync(filnavn, CreationCollisionOption.ReplaceExisting);
+            await FileIO.WriteTextAsync(file, JsonText);
+        }
+
+        public RelayCommand GetDataCommand { get; set; }
+
+        public async void GetDataFromDiscAsync()
+        {
+
+        }
+      
+
         public CoffeeViewModel()
         {
+            //henter liste hvis der er en ellers opretter den en ny tom liste. 
             coffeeList = new Model.CoffeeList();
             selectedCoffee = new Model.Coffee();
             insertCoffee = new Model.Coffee();
+
+            // man skal lave et nyt relaycommand object for forskellige commands man har.
             addCoffeeCommand = new RelayCommand(AddNewCoffee);
             removeCoffeeCommand = new RelayCommand(RemoveCoffeeInList);
-            //addCoffeeeCommand2 = new AddCoffeeToListCommand(AddNewCoffee); Martins eks
+            SaveCoffeeListCommand = new RelayCommand(SaveDataToDiscAsync);
+            GetDataCommand = new RelayCommand(GetDataFromDiscAsync);
+
+            //laver en instas af local folder
+            localfolder = ApplicationData.Current.LocalFolder;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
