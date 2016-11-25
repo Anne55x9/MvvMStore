@@ -9,6 +9,10 @@ using Newtonsoft.Json;
 
 namespace MvvMStore.Model
 {
+    /// <summary>
+    /// ObservableCollection (system.collection.objectModel) er en dynamisk data samling, 
+    /// som notificerer viewmodel når elementer er tilføjet, fjernet eller hele lister bliver updateret i viewet. 
+    /// </summary>
     public class CoffeeList : ObservableCollection<Coffee>
     {
         public CoffeeList()
@@ -20,7 +24,8 @@ namespace MvvMStore.Model
         }
 
        /// <summary>
-       /// Gover mig Json Af min kaffeliste
+       /// Json syntax implementeres via nuget Manager i Csharp og 'using Newtonsoft.Json'.
+       /// Metode som giver mig Json Af min kaffeliste (serializeObject).
        /// </summary>
        /// <returns></returns>
         public string GetJson()
@@ -29,6 +34,11 @@ namespace MvvMStore.Model
             return json;
         }
 
+
+        /// <summary>
+        /// Metode som giver mig Json liste konverteret til csharp syntax (deserializeObject).
+        /// </summary>
+        /// <param name="jsonText"></param>
         public void InsertJson(string jsonText)
         {
             List<Coffee> nyListe = JsonConvert.DeserializeObject<List<Coffee>>(jsonText);

@@ -8,15 +8,25 @@ using System.Windows.Input;
 
 namespace MvvMStore.ViewModel
 {
-
-    // Relaycommand er MArtins classes. 
+    /// <summary>
+    /// Relaycommand er MArtins navn til denne 'Command Klasse'. Klassen implementerer ICommand og bruger system.windows.input. 
+    /// </summary>
     public class RelayCommand : ICommand
     {
+        /// <summary>
+        /// Private instance fields som følger med ICommand implementeringen. De er begge sat til null i det eksempel. 
+        /// </summary>
         private Action methodToExecute = null;
         private Func<bool> methodTODetectCanExecute = null;
-        private Action addNewCoffee;
-        
 
+        /// <summary>
+        /// Et privat instance field af typen Action.
+        /// </summary>
+        private Action addNewCoffee;
+
+        /// <summary>
+        /// Icommand implementerer en EventHandler med metoderne CanExecute og Execute.
+        /// </summary>    
         public event EventHandler CanExecuteChanged;
 
         public bool CanExecute(object parameter)
@@ -37,7 +47,9 @@ namespace MvvMStore.ViewModel
             this.addNewCoffee();
         }
 
-
+        /// <summary>
+        ///  Relaycommand Metode med typen Action.
+        /// </summary>
         public RelayCommand(Action addNewCoffee)
         {
             this.addNewCoffee = addNewCoffee;

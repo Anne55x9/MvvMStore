@@ -8,6 +8,7 @@ namespace MvvMStore.Model
 {
     public class Coffee 
     {
+        //3 forskellige properties til kaffebutik.
         #region properties   
         private string name;
 
@@ -35,6 +36,7 @@ namespace MvvMStore.Model
         }
         #endregion 
 
+        //Giver navn, place of origin og price i tekst på UI (viewet). 
         public override string ToString()
         {
             

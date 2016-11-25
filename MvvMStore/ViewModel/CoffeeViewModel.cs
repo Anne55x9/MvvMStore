@@ -13,17 +13,52 @@ using Newtonsoft.Json;
 
 namespace MvvMStore
 {
+    /// <summary>
+    /// Min View Model klasse implementerer interfacen INotifyPropertyChanged og bruger system.ComponentModel. 
+    /// </summary>
     public class CoffeeViewModel : INotifyPropertyChanged
     {
-
         /// <summary>
-        /// Gemmer json data fra liste i localfolder
+        /// Gemmer json data fra liste i localfolder ved brug af using system.Storage.
         /// </summary>
         StorageFolder localfolder = null;
-
         private readonly string filnavn = "JsonText.json";
 
+        /// <summary>
+        /// Private instans fields som indeholder kaffelisten, 
+        /// </summary>
         private Model.CoffeeList coffeeList;
+        private Model.Coffee selectedCoffee;
+        private Model.Coffee insertCoffee;
+
+        /// <summary>
+        /// private instanser som indeholder commands til at tilføje og fjerne kaffe fra kaffeliste. 
+        /// </summary>
+        private RelayCommand addCoffeeCommand;
+        private RelayCommand removeCoffeeCommand;
+
+        public CoffeeViewModel()
+        {
+            //henter liste med kaffer. 
+            coffeeList = new Model.CoffeeList();
+            //Valg af kaffer. Fjernes kaffer i viewet notiferes til mainview model via OnPropertyChanged.
+            selectedCoffee = new Model.Coffee();
+            //Tilføjer kaffer til listen.
+            insertCoffee = new Model.Coffee();
+
+            // Laver et nyt relaycommand object for forskellige commands man har.
+            addCoffeeCommand = new RelayCommand(AddNewCoffee);
+            removeCoffeeCommand = new RelayCommand(RemoveCoffeeInList);
+            SaveCoffeeListCommand = new RelayCommand(SaveDataToDiscAsync);
+            GetDataCommand = new RelayCommand(GetDataFromDiscAsync);
+
+            //laver en instans af local folder
+            localfolder = ApplicationData.Current.LocalFolder;
+        }
+
+        /// <summary>
+        /// Metoderne jeg gør brug af i min MvvM kaffebutik
+        /// </summary>
 
         public Model.CoffeeList CoffeeList
         {
@@ -31,15 +66,14 @@ namespace MvvMStore
             set { coffeeList = value; }
         }
 
-        private Model.Coffee selectedCoffee;
-
+        /// <summary>
+        /// Denne metode implementerer INotiFyPropertyChanged interfacen. Når 
+        /// </summary>
         public Model.Coffee SelectedCoffee
         {
             get { return selectedCoffee; }
             set { selectedCoffee = value; OnPropertyChanged(nameof(SelectedCoffee)); }
         }
-
-        private Model.Coffee insertCoffee;
 
         public Model.Coffee InsertCoffee
         {
@@ -47,14 +81,10 @@ namespace MvvMStore
             set { insertCoffee = value; }
         }
 
-        private RelayCommand addCoffeeCommand;
-
-        public RelayCommand AddCoffeeCommand
-        {
-            get { return addCoffeeCommand; }
-            set { addCoffeeCommand = value; }
-        }
-
+        /// <summary>
+        /// I denne metode vil det være relevant at håndtere hvis bruger trykker 'add to coffee list' 
+        /// uden at have skrevet noget i felterne Name, Place of Origin og pris. 
+        /// </summary>
         public void AddNewCoffee()
         {
             Coffee tempCoffee = new Coffee();
@@ -63,16 +93,6 @@ namespace MvvMStore
             tempCoffee.Price = insertCoffee.Price;
 
             coffeeList.Add(tempCoffee);
-
-        }
-
-
-        private RelayCommand removeCoffeeCommand;
-
-        public RelayCommand RemoveCoffeeCommand
-        {
-            get { return removeCoffeeCommand; }
-            set { removeCoffeeCommand = value; }
         }
 
         public void RemoveCoffeeInList()
@@ -80,10 +100,25 @@ namespace MvvMStore
             coffeeList.Remove(selectedCoffee);
         }
 
+        public RelayCommand AddCoffeeCommand
+        {
+            get { return addCoffeeCommand; }
+            set { addCoffeeCommand = value; }
+        }
+
+        public RelayCommand RemoveCoffeeCommand
+        {
+            get { return removeCoffeeCommand; }
+            set { removeCoffeeCommand = value; }
+        }
 
         public RelayCommand SaveCoffeeListCommand { get; set; }
+        public RelayCommand GetDataCommand { get; set; }
 
         // FileIO er en statisk klasse.
+        /// <summary>
+        /// Async and await til at lave et responsivt brugerflade design. 
+        /// </summary>
 
         public async void SaveDataToDiscAsync()
         {
@@ -92,7 +127,11 @@ namespace MvvMStore
             await FileIO.WriteTextAsync(file, JsonText);
         }
 
-        public RelayCommand GetDataCommand { get; set; }
+        /// <summary>
+        /// Metoden inkluderer exceptionhåndtering med try/catch med message box (using Windows.UI.Popups). 
+        /// Det går ud på at hvis der ikke er gemt en fil med listen i Json format så
+        /// vises en besked box med titel og forklarende indhold til bruger. 
+        /// </summary>
 
         public async void GetDataFromDiscAsync()
         {
@@ -106,45 +145,21 @@ namespace MvvMStore
             }
             catch (Exception)
             {
-
                 MessageDialog NoData = new MessageDialog("No Data Found", "Error!");
                 await NoData.ShowAsync();
             }
-          
-         
         }
 
-        public CoffeeViewModel()
-        {
-           
-            //henter liste hvis der er en ellers opretter den en ny tom liste. 
-            coffeeList = new Model.CoffeeList();
-            selectedCoffee = new Model.Coffee();
-            insertCoffee = new Model.Coffee();
-
-            // man skal lave et nyt relaycommand object for forskellige commands man har.
-            addCoffeeCommand = new RelayCommand(AddNewCoffee);
-            removeCoffeeCommand = new RelayCommand(RemoveCoffeeInList);
-            SaveCoffeeListCommand = new RelayCommand(SaveDataToDiscAsync);
-            GetDataCommand = new RelayCommand(GetDataFromDiscAsync);
-
-            //laver en instas af local folder
-            localfolder = ApplicationData.Current.LocalFolder;
-
-
-            //try
-            //{
-            //    GetDataFromDiscAsync();
-            //}
-            //catch (Exception)
-            //{
-            //    //throw;
-            //    CoffeeList.Add(){NameCollisionOption  };
-            //}
-           
-        }
+        /// <summary>
+        /// Event Handler ved ændringer i view model notiferes view Modellen.
+        /// </summary>
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// Metode til at håndterer events ved OnPropertyChanged.
+        /// </summary>
+        /// <param name="propertyName"></param>
 
         protected virtual void OnPropertyChanged(string propertyName)
         {
